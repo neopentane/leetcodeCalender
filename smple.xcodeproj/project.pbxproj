@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		99912F742B6F79C10071EE16 /* progressmodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99912F732B6F79C10071EE16 /* progressmodel.swift */; };
 		99A148F52B6A9CDA00586067 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 99A148F42B6A9CDA00586067 /* Apollo */; };
 		99A148F72B6A9CDA00586067 /* Apollo-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 99A148F62B6A9CDA00586067 /* Apollo-Dynamic */; };
 		99A148F92B6A9CDA00586067 /* ApolloAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 99A148F82B6A9CDA00586067 /* ApolloAPI */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		99912F732B6F79C10071EE16 /* progressmodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = progressmodel.swift; sourceTree = "<group>"; };
 		99A149042B6BB7A400586067 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		99A149062B6CD7D400586067 /* profileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profileViewModel.swift; sourceTree = "<group>"; };
 		99B19EC12B68DA7F0025845A /* smple.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = smple.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -71,6 +73,7 @@
 			children = (
 				99B19EC42B68DA7F0025845A /* smpleApp.swift */,
 				99A149062B6CD7D400586067 /* profileViewModel.swift */,
+				99912F732B6F79C10071EE16 /* progressmodel.swift */,
 				99D20F3A2B6CDBDA006A08B0 /* profilemodel.swift */,
 				99D20F3C2B6D096F006A08B0 /* calendermodel.swift */,
 				99B19EC62B68DA7F0025845A /* ContentView.swift */,
@@ -171,6 +174,7 @@
 			files = (
 				99D20F3B2B6CDBDA006A08B0 /* profilemodel.swift in Sources */,
 				99D20F3D2B6D096F006A08B0 /* calendermodel.swift in Sources */,
+				99912F742B6F79C10071EE16 /* progressmodel.swift in Sources */,
 				99B19EC72B68DA7F0025845A /* ContentView.swift in Sources */,
 				99B19EC52B68DA7F0025845A /* smpleApp.swift in Sources */,
 				99A149072B6CD7D400586067 /* profileViewModel.swift in Sources */,

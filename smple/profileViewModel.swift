@@ -14,7 +14,8 @@ class PersonViewModel: ObservableObject {
     @Published var error: Error?
     @Published var calender: calenderModel?
     @Published var resultDictionary = [String: Int]()
-    @Published var epoches : [TimeInterval] = []
+    @Published var epoches : [[TimeInterval]] = []
+    @Published var progress : progressmodel?
     
     private var cancellables: Set<AnyCancellable> = []
     
@@ -23,6 +24,7 @@ class PersonViewModel: ObservableObject {
         self.fetchUser()
         self.fetchCalender()
         self.epoches = getEpochsForDaysInCurrentMonth() ?? []
+        self.fetchProgress()
     }
     
     func fetchUser() {
@@ -42,6 +44,26 @@ class PersonViewModel: ObservableObject {
                 self.person = obj
             })
             .store(in: &cancellables)
+    }
+    
+    func fetchProgress() {
+        let request = getRequestForProgress()
+        URLSession.shared.dataTaskPublisher(for: request)
+            .map(\.data)
+            .decode(type: progressmodel.self, decoder: JSONDecoder())
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    self.error = error
+                }
+            }, receiveValue: { obj in
+                self.progress = obj
+            })
+            .store(in: &cancellables)
+
     }
     
     func fetchCalender() {
@@ -100,7 +122,7 @@ class PersonViewModel: ObservableObject {
         
     }
     
-    func getEpochsForDaysInCurrentMonth() -> [TimeInterval]? {
+    func getEpochsForDaysInCurrentMonth() -> [[TimeInterval]]? {
         let calendar = Calendar.current
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "GMT")
@@ -110,9 +132,12 @@ class PersonViewModel: ObservableObject {
             return nil
         }
         
-        var epochTimestamps: [TimeInterval] = []
+        var epochTimestamps: [[TimeInterval]] = []
+        var arr : [TimeInterval] = []
         
-        for i in stride(from: 2, to: 0, by: -1) {
+        
+        for i in stride(from: 1, to: -1, by: -1) {
+            arr = []
             let currentMonth = calendar.component(.month, from: currentDate) - i
             let currentYear = calendar.component(.year, from: currentDate)
             
@@ -124,9 +149,10 @@ class PersonViewModel: ObservableObject {
                 
                 if let date = calendar.date(from: components) {
                     let epochTimestamp = date.timeIntervalSince1970
-                    epochTimestamps.append(epochTimestamp)
+                    arr.append(epochTimestamp)
                 }
             }
+            epochTimestamps.append(arr)
         }
         
         return epochTimestamps
@@ -143,6 +169,44 @@ class PersonViewModel: ObservableObject {
         return day
     }
     
+    func getRequestForProgress() -> URLRequest {
+        let jsonData = [
+            "query": "\n    query userProblemsSolved($username: String!) {\n  allQuestionsCount {\n    difficulty\n    count\n  }\n  matchedUser(username: $username) {\n    problemsSolvedBeatsStats {\n      difficulty\n      percentage\n    }\n    submitStatsGlobal {\n      acSubmissionNum {\n        difficulty\n        count\n      }\n    }\n  }\n}\n    ",
+            "variables": [
+                "username": "shreeramkelkar7"
+            ],
+            "operationName": "userProblemsSolved"
+        ] as [String : Any]
+        let data = try! JSONSerialization.data(withJSONObject: jsonData, options: [])
+
+        let url = URL(string: "https://leetcode.com/graphql/")!
+        let headers = [
+            "authority": "leetcode.com",
+            "accept": "*/*",
+            "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
+            "authorization": "",
+            "baggage": "sentry-environment=production,sentry-release=7366c15b,sentry-transaction=%2Fu%2F%5Busername%5D,sentry-public_key=2a051f9838e2450fbdd5a77eb62cc83c,sentry-trace_id=2420309d2b9047ccb158518285f1107c,sentry-sample_rate=0.03",
+            "content-type": "application/json",
+            "origin": "https://leetcode.com",
+            "random-uuid": "d27fdca5-5f86-94af-4fa1-2d96ace02839",
+            "referer": "https://leetcode.com/shreeramkelkar7/",
+            "sec-ch-ua": "\"Not A(Brand\";v=\"99\", \"Google Chrome\";v=\"121\", \"Chromium\";v=\"121\"",
+            "sec-ch-ua-mobile": "?1",
+            "sec-ch-ua-platform": "\"Android\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "same-origin",
+            "sentry-trace": "2420309d2b9047ccb158518285f1107c-8bc8eeb424a0101b-0",
+            "user-agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Mobile Safari/537.36",
+            "x-newrelic-id": "UAQDVFVRGwIAUVhbAAMFXlQ="
+        ]
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.allHTTPHeaderFields = headers
+        request.httpBody = data as Data
+        return request
+    }
     
     func getRequestForCalender() -> URLRequest {
         let jsonData = [
@@ -248,9 +312,21 @@ class PersonViewModel: ObservableObject {
 }
 
 extension Array {
-    func chunked(into size: Int) -> [[Element]] {
-        return stride(from: 0, to: count, by: size).map {
-            Array(self[$0 ..< Swift.min($0 + size, count)])
+    func getSlice(into size: Int) -> [[Element]] {
+        var result : [[Element]] = []
+        var arr : [Element] = []
+        var  i : Int = 0
+        for element in self {
+            arr.append(element)
+            i += 1
+            if i % size == 0 {
+                result.append(arr)
+                arr = []
+            }
         }
+        if i %  size != 0 {
+            result.append(arr)
+        }
+        return result
     }
 }
