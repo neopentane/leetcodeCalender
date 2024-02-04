@@ -1,7 +1,7 @@
 import Foundation
 
 // MARK: - DataClass
-public struct calenderModel: Codable {
+public struct CalenderModel: Codable {
     public let data: calenderDataClass
 
     public init(data: calenderDataClass) {
