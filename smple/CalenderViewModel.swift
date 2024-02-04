@@ -124,7 +124,7 @@ class CalenderViewModel: ObservableObject {
         let jsonData = [
             "query": "\n    query userProfileCalendar($username: String!, $year: Int) {\n  matchedUser(username: $username) {\n    userCalendar(year: $year) {\n      activeYears\n      streak\n      totalActiveDays\n      dccBadges {\n        timestamp\n        badge {\n          name\n          icon\n        }\n      }\n      submissionCalendar\n    }\n  }\n}\n    ",
             "variables": [
-                "username": "shreeramkelkar7"
+                "username": "\(UserData.shared.name)"
             ],
             "operationName": "userProfileCalendar"
         ] as [String : Any]
@@ -140,7 +140,7 @@ class CalenderViewModel: ObservableObject {
             "content-type": "application/json",
             "origin": "https://leetcode.com",
             "random-uuid": "d27fdca5-5f86-94af-4fa1-2d96ace02839",
-            "referer": "https://leetcode.com/shreeramkelkar7/",
+            "referer": "https://leetcode.com/\(UserData.shared.name)/",
             "sec-ch-ua": "\"Not_A Brand\";v=\"8\", \"Chromium\";v=\"120\", \"Google Chrome\";v=\"120\"",
             "sec-ch-ua-mobile": "?1",
             "sec-ch-ua-platform": "\"Android\"",

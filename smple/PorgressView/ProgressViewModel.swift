@@ -45,7 +45,7 @@ class ProgressViewModel: ObservableObject {
         let jsonData = [
             "query": "\n    query userProblemsSolved($username: String!) {\n  allQuestionsCount {\n    difficulty\n    count\n  }\n  matchedUser(username: $username) {\n    problemsSolvedBeatsStats {\n      difficulty\n      percentage\n    }\n    submitStatsGlobal {\n      acSubmissionNum {\n        difficulty\n        count\n      }\n    }\n  }\n}\n    ",
             "variables": [
-                "username": "shreeramkelkar7"
+                "username": "\(UserData.shared.name)"
             ],
             "operationName": "userProblemsSolved"
         ] as [String : Any]
@@ -61,7 +61,7 @@ class ProgressViewModel: ObservableObject {
             "content-type": "application/json",
             "origin": "https://leetcode.com",
             "random-uuid": "d27fdca5-5f86-94af-4fa1-2d96ace02839",
-            "referer": "https://leetcode.com/shreeramkelkar7/",
+            "referer": "https://leetcode.com/\(UserData.shared.name)/",
             "sec-ch-ua": "\"Not A(Brand\";v=\"99\", \"Google Chrome\";v=\"121\", \"Chromium\";v=\"121\"",
             "sec-ch-ua-mobile": "?1",
             "sec-ch-ua-platform": "\"Android\"",

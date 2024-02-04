@@ -43,7 +43,7 @@ class PersonViewModel: ObservableObject {
         let jsonData = [
             "query": "\n    query userPublicProfile($username: String!) {\n  matchedUser(username: $username) {\n    contestBadge {\n      name\n      expired\n      hoverText\n      icon\n    }\n    username\n    githubUrl\n    twitterUrl\n    linkedinUrl\n    profile {\n      ranking\n      userAvatar\n      realName\n      aboutMe\n      school\n      websites\n      countryName\n      company\n      jobTitle\n      skillTags\n      postViewCount\n      postViewCountDiff\n      reputation\n      reputationDiff\n      solutionCount\n      solutionCountDiff\n      categoryDiscussCount\n      categoryDiscussCountDiff\n    }\n  }\n}\n    ",
             "variables": [
-                "username": "shreeramkelkar7"
+                "username": "\(UserData.shared.name)"
             ],
             "operationName": "userPublicProfile"
         ] as [String : Any]
@@ -59,7 +59,7 @@ class PersonViewModel: ObservableObject {
             "content-type": "application/json",
             "origin": "https://leetcode.com",
             "random-uuid": "d27fdca5-5f86-94af-4fa1-2d96ace02839",
-            "referer": "https://leetcode.com/shreeramkelkar7/",
+            "referer": "https://leetcode.com/\(UserData.shared.name)/",
             "sec-ch-ua": "\"Not_A Brand\";v=\"8\", \"Chromium\";v=\"120\", \"Google Chrome\";v=\"120\"",
             "sec-ch-ua-mobile": "?1",
             "sec-ch-ua-platform": "\"Android\"",
