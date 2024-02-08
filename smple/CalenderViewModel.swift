@@ -87,11 +87,11 @@ class CalenderViewModel: ObservableObject {
         var arr : [TimeInterval] = []
         
         
-        for i in stride(from: 1, to: -1, by: -1) {
+        for i in stride(from: 5, to: -1, by: -1) {
             arr = []
             let currentMonth = calendar.component(.month, from: currentDate) - i
             let currentYear = calendar.component(.year, from: currentDate)
-            
+            print("Month \(currentMonth)Upper Bound \(currentMonthRange.upperBound) Lower Bound \(currentMonthRange.lowerBound)")
             for day in currentMonthRange.lowerBound..<currentMonthRange.upperBound {
                 var components = DateComponents()
                 components.year = currentYear

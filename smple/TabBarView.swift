@@ -9,12 +9,16 @@ import SwiftUI
 
 struct TabBarView: View {
     var body: some View {
-        VStack {
-            ProfileView()
-            Text("Progress")
-            ProfileProgressView()
-            Text("Daily Activity")
-            CalenderView()
+        TabView {
+            ProfileTabView()
+                .tabItem {
+                    Label("Menu", systemImage: "list.dash")
+                }
+
+            ActivityTabView()
+                .tabItem {
+                    Label("Order", systemImage: "square.and.pencil")
+                }
         }
         .padding()
     }
