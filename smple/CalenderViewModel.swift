@@ -73,25 +73,55 @@ class CalenderViewModel: ObservableObject {
         
     }
     
-    func getEpochsForDaysInCurrentMonth() -> [[TimeInterval]]? {
-        let calendar = Calendar.current
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = TimeZone(identifier: "GMT")
+    func getFirstDayOfTheMonth(_ n: Int) -> Date? {
+        // Get the current date
         let currentDate = Date()
         
-        guard let currentMonthRange = calendar.range(of: .day, in: .month, for: currentDate) else {
-            return nil
+        // Create a Calendar instance
+        let calendar = Calendar.current
+        
+        // Get the current year and month
+        let currentYear = calendar.component(.year, from: currentDate)
+        let currentMonth = calendar.component(.month, from: currentDate)
+        
+        // Calculate the year and month for the last month
+        var lastMonthYear = currentYear
+        var lastMonth = currentMonth - n
+        
+        if lastMonth <= 0 {
+            // If the last month is negative, adjust the year and month accordingly
+            lastMonthYear -= 1
+            lastMonth += 12
         }
         
+        // Create a DateComponents object for the first day of the last month
+        var dateComponents = DateComponents()
+        dateComponents.year = lastMonthYear
+        dateComponents.month = lastMonth
+        dateComponents.day = 1
+        
+        // Create a date from the components
+        let firstDayOfLastMonth = calendar.date(from: dateComponents)
+        
+        return firstDayOfLastMonth
+    }
+    
+    func getEpochsForDaysInCurrentMonth() -> [[TimeInterval]]? {
         var epochTimestamps: [[TimeInterval]] = []
         var arr : [TimeInterval] = []
-        
-        
-        for i in stride(from: 5, to: -1, by: -1) {
+        for i in stride(from: 4, to: -1, by: -1) {
             arr = []
-            let currentMonth = calendar.component(.month, from: currentDate) - i
+            let calendar = Calendar.current
+            let dateFormatter = DateFormatter()
+            dateFormatter.timeZone = TimeZone(identifier: "GMT")
+            let currentDate = getFirstDayOfTheMonth(i) ?? Date()
+            
+            guard let currentMonthRange = calendar.range(of: .day, in: .month, for: currentDate) else {
+                return nil
+            }
+            
+            let currentMonth = calendar.component(.month, from: currentDate)
             let currentYear = calendar.component(.year, from: currentDate)
-            print("Month \(currentMonth)Upper Bound \(currentMonthRange.upperBound) Lower Bound \(currentMonthRange.lowerBound)")
             for day in currentMonthRange.lowerBound..<currentMonthRange.upperBound {
                 var components = DateComponents()
                 components.year = currentYear

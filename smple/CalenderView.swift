@@ -14,6 +14,7 @@ struct CalenderView: View {
         ScrollView(.horizontal) {
             HStack(alignment: .top) {
                 ForEach(vm.epoches ,id: \.self) { month in
+                    Divider()
                     ForEach(month.getSlice(into: 7) ,id: \.self) { index in
                         VStack() {
                             ForEach(index , id: \.self) { j in
